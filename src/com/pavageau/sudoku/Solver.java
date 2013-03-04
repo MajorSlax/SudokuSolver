@@ -29,7 +29,7 @@ public class Solver {
 		SudokuBoard board = new SudokuBoard(args[0]);
 		// all the replace is for the printed output to be pretty.
 		System.out.println(board.toString().replace("solved", "provided")
-				.replace("123456789", "        0").replace("        ", ""));
+				.replace("123456789", "         ").replace("        ", ""));
 		try {
 			recursiveSolve(board);
 		} catch (SolvedException e) {
