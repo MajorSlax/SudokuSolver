@@ -13,10 +13,6 @@ import com.pavageau.sudoku.SudokuCell.UnsolvableException;
  */
 public class Solver {
 
-	private static class SolverExitException extends Exception {
-		private static final long serialVersionUID = 1L;
-	}
-
 	/**
 	 * @param args
 	 *            expects one argument, an 81 digit long string containing only
@@ -35,20 +31,17 @@ public class Solver {
 		System.out.println(board.toString().replace("solved", "provided")
 				.replace("123456789", "        0").replace("        ", ""));
 		try {
-			try {
-				recursiveSolve(board);
-			} catch (SolvedException e) {
-				long duration = System.currentTimeMillis() - start;
-				System.out.println("This board took " + duration
-						+ "ms to solve.\n");
-				throw new SolverExitException();
-			} catch (UnsolvableException e) {
-				throw new RuntimeException("Unsolvable.");
-			}
-			// this should never happen, in theory
-			System.out.println("this board is too tough for me...");
-		} catch (SolverExitException e) {
+			recursiveSolve(board);
+		} catch (SolvedException e) {
+			long duration = System.currentTimeMillis() - start;
+			System.out.println("This board took " + duration + "ms to solve.");
+			System.exit(0);
+		} catch (UnsolvableException e) {
+			System.out.println("This board has no solution.");
+			System.exit(0);
 		}
+		// this should never happen, in theory
+		System.out.println("this board is too tough for me...");
 	}
 
 	/**
