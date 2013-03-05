@@ -25,11 +25,11 @@ public class Solver {
 			return;
 		}
 
-		long start = System.currentTimeMillis();
 		SudokuBoard board = new SudokuBoard(args[0]);
 		// all the replace is for the printed output to be pretty.
 		System.out.println(board.toString().replace("solved", "provided")
 				.replace("123456789", "         ").replace("        ", ""));
+		long start = System.currentTimeMillis();
 		try {
 			recursiveSolve(board);
 		} catch (SolvedException e) {
@@ -37,7 +37,9 @@ public class Solver {
 			System.out.println("This board took " + duration + "ms to solve.");
 			System.exit(0);
 		} catch (UnsolvableException e) {
-			System.out.println("This board has no solution.");
+			long duration = System.currentTimeMillis() - start;
+			System.out.println("This board has no solution. (" + duration
+					+ "ms)");
 			System.exit(0);
 		}
 		// this should never happen, in theory

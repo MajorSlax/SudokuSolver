@@ -29,7 +29,7 @@ public class SudokuBoard {
 	 *            81 digit String to use as a source. First 9 digits represent
 	 *            the first line of the grid, Next 9 characters represent the
 	 *            second line, and so on. Only characters 0-9 are allowed. 0
-	 *            represents an unknown cell.
+	 *            represents an empty cell.
 	 */
 	public SudokuBoard(String input) {
 		if (!input.matches("[0-9]{81}")) {
@@ -41,7 +41,7 @@ public class SudokuBoard {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				this.board[i][j] = new SudokuCell(i, j,
-						input.charAt(index++) - 48);
+						input.charAt(index++) - '0');
 			}
 		}
 	}
@@ -104,6 +104,21 @@ public class SudokuBoard {
 		}
 		result.remove(cell);
 		return result;
+	}
+
+	/**
+	 * Get all the units (rows, lines, and 3*3 squares) in teh board
+	 * 
+	 * @return all the units in the board.
+	 */
+	private SudokuCell[][] getAllUnits() {
+		SudokuCell[][] allUnits = new SudokuCell[27][9];
+		for (int i = 0; i < 9; i++) {
+			allUnits[i] = getRow(i);
+			allUnits[9 + i] = getCol(i);
+			allUnits[18 + i] = getSquare(i);
+		}
+		return allUnits;
 	}
 
 	/**
@@ -230,46 +245,8 @@ public class SudokuBoard {
 	public void singleValueCleanup() throws SolvedException,
 			UnsolvableException {
 		simpleCleanUp();
-
-		boolean globalChanged = true;
-		while (globalChanged) {
-			globalChanged = false;
-			// rows
-			boolean rowChanged = true;
-			while (rowChanged) {
-				rowChanged = false;
-				for (int index = 0; index < 9; index++) {
-					if (handleUniqueValuesInUnit(getRow(index))) {
-						rowChanged = true;
-						globalChanged = true;
-					}
-				}
-				simpleCleanUp();
-			}
-
-			// columns
-			boolean colChanged = true;
-			while (colChanged) {
-				colChanged = false;
-				for (int index = 0; index < 9; index++) {
-					if (handleUniqueValuesInUnit(getCol(index))) {
-						colChanged = true;
-						globalChanged = true;
-					}
-				}
-				simpleCleanUp();
-			}
-
-			// squares
-			boolean squareChanged = true;
-			while (squareChanged) {
-				squareChanged = false;
-				for (int index = 0; index < 9; index++) {
-					if (handleUniqueValuesInUnit(getSquare(index))) {
-						squareChanged = true;
-						globalChanged = true;
-					}
-				}
+		for (SudokuCell[] unit : getAllUnits()) {
+			if (handleUniqueValuesInUnit(unit)) {
 				simpleCleanUp();
 			}
 		}
@@ -287,7 +264,6 @@ public class SudokuBoard {
 	 */
 	private boolean handleUniqueValuesInUnit(SudokuCell[] unit)
 			throws UnsolvableException {
-		boolean changed = false;
 		Map<Integer, Set<SudokuCell>> valueCount = new HashMap<Integer, Set<SudokuCell>>();
 		for (SudokuCell cell : unit) {
 			// handle only unfixed cells
@@ -300,6 +276,7 @@ public class SudokuBoard {
 				}
 			}
 		}
+		boolean changed = false;
 		for (Entry<Integer, Set<SudokuCell>> entry : valueCount.entrySet()) {
 			Set<SudokuCell> cells = entry.getValue();
 			if (cells.size() == 1) {
