@@ -14,7 +14,7 @@ import com.pavageau.sudoku.SudokuCell.UnsolvableException;
 /**
  * @author pavageau
  * 
- *         Represents a Boggle board
+ *         Represents a Sudoku board
  */
 public class SudokuBoard {
 

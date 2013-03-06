@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author pavageau
  * 
- *         Represents a cell in a Boggle board
+ *         Represents a cell in a Sudoku board
  */
 public class SudokuCell {
 
