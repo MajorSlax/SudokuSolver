@@ -37,7 +37,9 @@ public class Solver {
 			System.out.println("This board took " + duration + "ms to solve.");
 			System.exit(0);
 		} catch (UnsolvableException e) {
-			System.out.println("This board has no solution.");
+			long duration = System.currentTimeMillis() - start;
+			System.out.println("This board has no solution (" + duration
+					+ "ms).");
 			System.exit(0);
 		}
 		// this should never happen, in theory
@@ -54,7 +56,7 @@ public class Solver {
 	 * @throws SolvedException
 	 *             when the board is solved
 	 */
-	private static void recursiveSolve(SudokuBoard board)
+	public static void recursiveSolve(SudokuBoard board)
 			throws UnsolvableException, SolvedException {
 		board.singleValueCleanup();
 		Map<Integer, Set<SudokuCell>> unfixedCellMap = board
