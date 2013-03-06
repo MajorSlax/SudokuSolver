@@ -1,10 +1,9 @@
 package com.pavageau.sudoku;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author pavageau
@@ -18,7 +17,7 @@ public class SudokuCell {
 
 	public final int x;
 	public final int y;
-	private final Set<Integer> possibleValues = new HashSet<Integer>();
+	private final List<Integer> possibleValues = new ArrayList<Integer>();
 	private int value;
 
 	/**
@@ -80,19 +79,22 @@ public class SudokuCell {
 	 * @throws UnsolvableException
 	 *             if there are no more possible values after removal
 	 */
-	public boolean removePossibleValue(int valueToRemove)
+	public boolean removePossibleValue(Integer valueToRemove)
 			throws UnsolvableException {
-		boolean result = possibleValues.remove(valueToRemove);
-		int possibilities = possibleValues.size();
-		if (possibilities < 1) {
-			throw new UnsolvableException();
-		} else if (possibilities == 1) {
-			setValue(possibleValues.iterator().next());
+		boolean remove = possibleValues.contains(valueToRemove);
+		if (remove) {
+			possibleValues.remove(valueToRemove);
+			int possibilities = possibleValues.size();
+			if (possibilities < 1) {
+				throw new UnsolvableException();
+			} else if (possibilities == 1) {
+				setValue(possibleValues.iterator().next());
+			}
 		}
-		return result;
+		return remove;
 	}
 
-	public Set<Integer> getPossibleValues() {
+	public List<Integer> getPossibleValues() {
 		return possibleValues;
 	}
 

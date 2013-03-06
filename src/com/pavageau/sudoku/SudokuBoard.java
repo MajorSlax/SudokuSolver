@@ -1,8 +1,10 @@
 package com.pavageau.sudoku;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -264,24 +266,24 @@ public class SudokuBoard {
 	 */
 	private boolean handleUniqueValuesInUnit(SudokuCell[] unit)
 			throws UnsolvableException {
-		Map<Integer, Set<SudokuCell>> valueCount = new HashMap<Integer, Set<SudokuCell>>();
+		Map<Integer, List<SudokuCell>> valueCount = new HashMap<Integer, List<SudokuCell>>();
 		for (SudokuCell cell : unit) {
 			// handle only unfixed cells
 			if (!cell.isFixed()) {
 				for (int i : cell.getPossibleValues()) {
 					if (!valueCount.containsKey(i)) {
-						valueCount.put(i, new HashSet<SudokuCell>());
+						valueCount.put(i, new ArrayList<SudokuCell>());
 					}
 					valueCount.get(i).add(cell);
 				}
 			}
 		}
 		boolean changed = false;
-		for (Entry<Integer, Set<SudokuCell>> entry : valueCount.entrySet()) {
-			Set<SudokuCell> cells = entry.getValue();
+		for (Entry<Integer, List<SudokuCell>> entry : valueCount.entrySet()) {
+			List<SudokuCell> cells = entry.getValue();
 			if (cells.size() == 1) {
 				// set cell value
-				cells.iterator().next().setValue(entry.getKey());
+				cells.get(0).setValue(entry.getKey());
 				changed = true;
 			}
 		}
@@ -314,15 +316,15 @@ public class SudokuBoard {
 	 * @return A map in which unsolved cells are grouped by their number of
 	 *         possible values
 	 */
-	public Map<Integer, Set<SudokuCell>> getCellsPerNumberOfPossibleValues() {
-		Map<Integer, Set<SudokuCell>> result = new HashMap<Integer, Set<SudokuCell>>();
+	public Map<Integer, List<SudokuCell>> getCellsPerNumberOfPossibleValues() {
+		Map<Integer, List<SudokuCell>> result = new HashMap<Integer, List<SudokuCell>>();
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				SudokuCell cell = board[i][j];
-				int size = cell.getPossibleValues().size();
-				if (size > 1) {
+				if (!cell.isFixed()) {
+					int size = cell.getPossibleValues().size();
 					if (!result.containsKey(size)) {
-						result.put(size, new HashSet<SudokuCell>());
+						result.put(size, new ArrayList<SudokuCell>());
 					}
 					result.get(size).add(cell);
 				}

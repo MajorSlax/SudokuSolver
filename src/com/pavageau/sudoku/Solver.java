@@ -1,7 +1,7 @@
 package com.pavageau.sudoku;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.pavageau.sudoku.SudokuBoard.SolvedException;
 import com.pavageau.sudoku.SudokuCell.UnsolvableException;
@@ -59,10 +59,10 @@ public class Solver {
 	private static void recursiveSolve(SudokuBoard board)
 			throws UnsolvableException, SolvedException {
 		board.singleValueCleanup();
-		Map<Integer, Set<SudokuCell>> unfixedCellMap = board
+		Map<Integer, List<SudokuCell>> unfixedCellMap = board
 				.getCellsPerNumberOfPossibleValues();
 		for (int i = 2; i < 10; i++) {
-			Set<SudokuCell> cells = unfixedCellMap.get(i);
+			List<SudokuCell> cells = unfixedCellMap.get(i);
 			if (cells != null) {
 				for (SudokuCell cell : cells) {
 					Integer[] possiblevaluesClone = cell.getPossibleValues()
