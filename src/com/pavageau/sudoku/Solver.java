@@ -56,7 +56,7 @@ public class Solver {
 	 * @throws SolvedException
 	 *             when the board is solved
 	 */
-	private static void recursiveSolve(SudokuBoard board)
+	public static void recursiveSolve(SudokuBoard board)
 			throws UnsolvableException, SolvedException {
 		board.singleValueCleanup();
 		Map<Integer, List<SudokuCell>> unfixedCellMap = board
