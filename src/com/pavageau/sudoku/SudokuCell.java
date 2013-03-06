@@ -88,9 +88,6 @@ public class SudokuCell {
 				throw new UnsolvableException();
 			case 1:
 				setValue(possibleValues.iterator().next());
-				break;
-			default:
-				break;
 			}
 		}
 		return remove;
