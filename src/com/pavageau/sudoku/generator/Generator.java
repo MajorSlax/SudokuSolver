@@ -17,7 +17,7 @@ public class Generator {
 	public static void main(String[] args) {
 		Map<String, Long> solved = new HashMap<String, Long>();
 		Map<String, Long> unsolved = new HashMap<String, Long>();
-		int testSize = 10000;
+		int testSize = 5000;
 		for (int i = 0; i < testSize; i++) {
 			String boardAsString = generateRandomBoard();
 			if (!unsolved.keySet().contains(boardAsString)
@@ -37,11 +37,11 @@ public class Generator {
 			}
 		}
 		System.out.println("\n");
-		System.out.println(String.format("SOLVED: %d%%\n", solved.size() * 100
-				/ testSize));
+		System.out.println(String.format("SOLVED: %d (%d%%)\n", solved.size(),
+				solved.size() * 100 / testSize));
 		printResult(solved);
-		System.out.println(String.format("UNSOLVED: %d%%\n", unsolved.size()
-				* 100 / testSize));
+		System.out.println(String.format("UNSOLVED: %d (%d%%)\n",
+				unsolved.size(), unsolved.size() * 100 / testSize));
 		printResult(unsolved);
 	}
 
