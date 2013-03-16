@@ -83,11 +83,14 @@ public class SudokuCell {
 	public boolean removePossibleValue(int valueToRemove)
 			throws UnsolvableException {
 		boolean result = possibleValues.remove(valueToRemove);
-		int possibilities = possibleValues.size();
-		if (possibilities < 1) {
-			throw new UnsolvableException();
-		} else if (possibilities == 1) {
-			setValue(possibleValues.iterator().next());
+		// only do stuff if something was actually removed
+		if (result) {
+			int possibilities = possibleValues.size();
+			if (possibilities < 1) {
+				throw new UnsolvableException();
+			} else if (possibilities == 1) {
+				setValue(possibleValues.iterator().next());
+			}
 		}
 		return result;
 	}
