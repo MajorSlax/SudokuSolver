@@ -210,9 +210,7 @@ public class SudokuBoard {
 					if (cell.isFixed()) {
 						// remove cell value from all neighbors
 						for (SudokuCell neighbor : neighbors) {
-							if (!neighbor.isFixed()
-									&& neighbor.removePossibleValue(cell
-											.getValue())) {
+							if (neighbor.removePossibleValue(cell.getValue())) {
 								changed = true;
 							}
 						}
