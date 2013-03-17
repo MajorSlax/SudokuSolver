@@ -199,7 +199,7 @@ public class SudokuBoard {
 	 * @throws UnsolvableException
 	 *             when a cell throws an UnsolvableException
 	 */
-	private void simpleCleanUp() throws SolvedException, UnsolvableException {
+	public void simpleCleanUp() throws SolvedException, UnsolvableException {
 		boolean changed = true;
 		while (changed) {
 			changed = false;

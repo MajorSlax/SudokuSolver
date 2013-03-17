@@ -17,7 +17,7 @@ public class Generator {
 	public static void main(String[] args) {
 		Map<String, Long> solved = new HashMap<String, Long>();
 		Map<String, Long> unsolved = new HashMap<String, Long>();
-		int testSize = 5000;
+		int testSize = 100;
 		for (int i = 0; i < testSize; i++) {
 			String boardAsString = generateRandomBoard();
 			if (!unsolved.keySet().contains(boardAsString)
@@ -78,15 +78,14 @@ public class Generator {
 			sb.append('0');
 		}
 		String allZeros = sb.toString();
-		// 17 is the proven minimum number of clues for a Sudoku to have
-		// potentially at most 1 solution (less will always have 2 or more).
-		// Thus, filling 17 cells with numbers 1 through 9
-		int differentValues = 0;
-		StringBuilder boardBuilder = null;
-		while (differentValues < 8) {
-			boardBuilder = new StringBuilder(allZeros);
+		String board = null;
+		while (true) {
+			StringBuilder boardBuilder = new StringBuilder(allZeros);
 			Random rand = new Random();
 			Set<Integer> presentValues = new HashSet<Integer>();
+			// 17 is the proven minimum number of clues for a Sudoku to have
+			// potentially at most 1 solution (less will always have 2 or more).
+			// Thus, filling 17 cells with numbers 1 through 9
 			int filledCells = 17;
 			for (Integer i = 0; i < filledCells; i++) {
 				int randIndex = rand.nextInt(81);
@@ -100,8 +99,18 @@ public class Generator {
 			}
 			// check that we have at least 8 different digits in the grid (less
 			// makes for 2 solutions or more)
-			differentValues = presentValues.size();
+			if (presentValues.size() >= 8) {
+				board = boardBuilder.toString();
+				SudokuBoard tentativBoard = new SudokuBoard(board);
+				try {
+					tentativBoard.simpleCleanUp();
+					break;
+				} catch (Exception e) {
+					// if a board can be solved or determined unsolvable using
+					// only simple cleanup, it's too simple, so keep trying
+				}
+			}
 		}
-		return boardBuilder.toString();
+		return board;
 	}
 }
