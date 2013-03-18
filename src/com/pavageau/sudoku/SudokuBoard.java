@@ -25,7 +25,7 @@ public class SudokuBoard {
 	}
 
 	/**
-	 * Creates a BoggleBoard from a 81 digit String
+	 * Creates a Sudoku board from a 81 digit String
 	 * 
 	 * @param input
 	 *            81 digit String to use as a source. First 9 digits represent
